@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DotnetMobile.CustomGrid</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Dheeraj Kumar Gunti</authors>
+    <owners>Dheeraj Kumar Gunti</owners>
+    <licenseUrl>https://github.com/guntidheerajkumar/DotnetMobileCustomGrid/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/guntidheerajkumar/DotnetMobileCustomGrid</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Custom grid for Xamarin Forms with out Custom Renderers</description>
+    <releaseNotes>First Release</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>Xamarin Forms</tags>
+  </metadata>
+  <files/>
+</package>
