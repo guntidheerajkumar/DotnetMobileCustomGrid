@@ -17,9 +17,12 @@ namespace Sample
 
         public Command ClickCommand { get; set; }
 
-        public MainViewModel(INavigation navigation)
+		public Type TemplateMain { get; set; } 
+
+		public MainViewModel(INavigation navigation)
         {
             this.navigation = navigation;
+			TemplateMain = typeof(MainTemplate);
             LstCustomData = new ObservableCollection<CustomData>();
             CreateData();
             ClickCommand = new Command(async (obj) => { await GetData(obj); });

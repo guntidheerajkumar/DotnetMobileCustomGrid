@@ -9,132 +9,136 @@ using System.Collections;
 
 namespace DotnetMobile.CustomGrid
 {
-    public partial class GridView : Grid
-    {
-        public GridView()
-        {
-            for (var i = 0; i < MaxColumns; i++)
-                ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Star });
-        }
+	public partial class GridView : Grid
+	{
+		public GridView()
+		{
+			for (var i = 0; i < MaxColumns; i++)
+				ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Star });
+		}
 
-        public static BindableProperty CommandParameterProperty = BindableProperty.Create(
-                                                                    propertyName: "CommandParameter",
-                                                                    returnType: typeof(object),
-                                                                    declaringType: typeof(GridView),
-                                                                    defaultValue: null,
-                                                                    defaultBindingMode: BindingMode.TwoWay,
-                                                                    propertyChanged: null);
+		public static BindableProperty CommandParameterProperty = BindableProperty.Create(
+																	propertyName: "CommandParameter",
+																	returnType: typeof(object),
+																	declaringType: typeof(GridView),
+																	defaultValue: null,
+																	defaultBindingMode: BindingMode.TwoWay,
+																	propertyChanged: null);
 
 
-        public static BindableProperty CommandProperty = BindableProperty.Create(
-                                                                    propertyName: "Command",
-                                                                    returnType: typeof(ICommand),
-                                                                    declaringType: typeof(GridView),
-                                                                    defaultValue: null,
-                                                                    defaultBindingMode: BindingMode.TwoWay,
-                                                                    propertyChanged: null);
+		public static BindableProperty CommandProperty = BindableProperty.Create(
+																	propertyName: "Command",
+																	returnType: typeof(ICommand),
+																	declaringType: typeof(GridView),
+																	defaultValue: null,
+																	defaultBindingMode: BindingMode.TwoWay,
+																	propertyChanged: null);
 
-        public static BindableProperty ItemsSourceProperty = BindableProperty.Create(
-                                                                    propertyName: "ItemsSource",
-                                                                    returnType: typeof(IEnumerable<object>),
-                                                                    declaringType: typeof(GridView),
-                                                                    defaultValue: null,
-                                                                    defaultBindingMode: BindingMode.TwoWay,
-                                                                    propertyChanged: async (bindable, oldValue, newValue) => {
-                                                                        await ((GridView)bindable).BuildTiles((IEnumerable<object>)newValue);
-                                                                    });
-        private int _maxColumns = 2;
-        private float _tileHeight = 0;
 
-        public Type ItemTemplate { get; set; } = typeof(TypeTemplate);
+		public static BindableProperty ItemTemplateProperty = BindableProperty.Create(
+																			propertyName: "ItemTemplate",
+																			returnType: typeof(object),
+																			declaringType: typeof(GridView),
+																			defaultValue: null,
+																			defaultBindingMode: BindingMode.TwoWay,
+																			propertyChanged: null);
 
-        public int MaxColumns
-        {
-            get { return _maxColumns; }
-            set { _maxColumns = value; }
-        }
+		public static BindableProperty ItemsSourceProperty = BindableProperty.Create(
+																	propertyName: "ItemsSource",
+																	returnType: typeof(IEnumerable<object>),
+																	declaringType: typeof(GridView),
+																	defaultValue: null,
+																	defaultBindingMode: BindingMode.TwoWay,
+																	propertyChanged: async (bindable, oldValue, newValue) => {
+																		await ((GridView)bindable).BuildTiles((IEnumerable<object>)newValue);
+																	});
 
-        public float TileHeight
-        {
-            get { return _tileHeight; }
-            set { _tileHeight = value; }
-        }
 
-        public object CommandParameter
-        {
-            get { return GetValue(CommandParameterProperty); }
-            set { SetValue(CommandParameterProperty, value); }
-        }
+		private int _maxColumns = 2;
+		private float _tileHeight = 0;
 
-        public ICommand Command
-        {
-            get { return (ICommand)GetValue(CommandProperty); }
-            set
-            {
-                SetValue(CommandProperty, value);
-            }
-        }
 
-        public IEnumerable<object> ItemsSource
-        {
-            get { return (IEnumerable<object>)GetValue(ItemsSourceProperty); }
-            set { SetValue(ItemsSourceProperty, value); }
-        }
+		public int MaxColumns {
+			get { return _maxColumns; }
+			set { _maxColumns = value; }
+		}
 
-        public async Task BuildTiles(IEnumerable<object> tiles)
-        {
-            try
-            {
-                if (tiles == null || tiles.Count() == 0)
-                    Children?.Clear();
+		public float TileHeight {
+			get { return _tileHeight; }
+			set { _tileHeight = value; }
+		}
 
-                // Wipe out the previous row definitions if they're there.
-                RowDefinitions?.Clear();
+		public object CommandParameter {
+			get { return GetValue(CommandParameterProperty); }
+			set { SetValue(CommandParameterProperty, value); }
+		}
 
-                var enumerable = tiles as IList ?? tiles.ToList();
-                var numberOfRows = Math.Ceiling(enumerable.Count / (float)MaxColumns);
+		public ICommand Command {
+			get { return (ICommand)GetValue(CommandProperty); }
+			set {
+				SetValue(CommandProperty, value);
+			}
+		}
 
-                for (var i = 0; i < numberOfRows; i++)
-                    RowDefinitions?.Add(new RowDefinition { Height = TileHeight });
+		public Type ItemTemplateParamater {
+			get { return (Type)GetValue(ItemTemplateProperty); }
+			set {
+				SetValue(ItemTemplateProperty, value);
+			}
+		}
 
-                for (var index = 0; index < enumerable.Count; index++)
-                {
-                    var column = index % MaxColumns;
-                    var row = (int)Math.Floor(index / (float)MaxColumns);
+		public IEnumerable<object> ItemsSource {
+			get { return (IEnumerable<object>)GetValue(ItemsSourceProperty); }
+			set { SetValue(ItemsSourceProperty, value); }
+		}
 
-                    var tile = await BuildTile(enumerable[index]);
+		public async Task BuildTiles(IEnumerable<object> tiles)
+		{
+			try {
+				if (tiles == null || tiles.Count() == 0)
+					Children?.Clear();
 
-                    Children?.Add(tile, column, row);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                GC.Collect();
-            }
-        }
+				// Wipe out the previous row definitions if they're there.
+				RowDefinitions?.Clear();
 
-        private async Task<Layout> BuildTile(object item)
-        {
-            return await Task.Run(() => {
+				var enumerable = tiles as IList ?? tiles.ToList();
+				var numberOfRows = Math.Ceiling(enumerable.Count / (float)MaxColumns);
 
-                var buildTile = (Layout)Activator.CreateInstance(ItemTemplate, item);
-                buildTile.InputTransparent = false;
-                buildTile.BindingContext = item;
+				for (var i = 0; i < numberOfRows; i++)
+					RowDefinitions?.Add(new RowDefinition { Height = TileHeight });
 
-                var tapGestureRecognizer = new TapGestureRecognizer
-                {
-                    Command = Command,
-                    CommandParameter = item
-                };
+				for (var index = 0; index < enumerable.Count; index++) {
+					var column = index % MaxColumns;
+					var row = (int)Math.Floor(index / (float)MaxColumns);
 
-                buildTile?.GestureRecognizers.Add(tapGestureRecognizer);
+					var tile = await BuildTile(enumerable[index]);
 
-                return buildTile;
-            });
-        }
-    }
+					Children?.Add(tile, column, row);
+				}
+			} catch (Exception ex) {
+				throw ex;
+			} finally {
+				GC.Collect();
+			}
+		}
+
+		private async Task<Layout> BuildTile(object item)
+		{
+			return await Task.Run(() => {
+				var buildTile = (Layout)Activator.CreateInstance(ItemTemplateParamater, item);
+
+				buildTile.InputTransparent = false;
+				buildTile.BindingContext = item;
+
+				var tapGestureRecognizer = new TapGestureRecognizer {
+					Command = Command,
+					CommandParameter = item
+				};
+
+				buildTile?.GestureRecognizers.Add(tapGestureRecognizer);
+
+				return buildTile;
+			});
+		}
+	}
 }

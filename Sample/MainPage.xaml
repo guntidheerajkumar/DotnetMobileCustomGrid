@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Sample"
              xmlns:custom="clr-namespace:DotnetMobile.CustomGrid;assembly=DotnetMobile.CustomGrid"
              x:Class="Sample.MainPage">
     <ContentPage.Content>
@@ -14,12 +13,13 @@
 							ColumnSpacing="10" 
 							MaxColumns="2" 
 							Padding="20" 
+							ItemTemplate="{Binding TemplateMain}"
 							ItemsSource="{Binding LstCustomData}" 
 							Command="{Binding ClickCommand}"
 							IsClippedToBounds="False">
-                <local:GridView.TileHeight>
+                <custom:GridView.TileHeight>
                     <OnPlatform x:TypeArguments="x:Single" iOS="120" Android="120" WinPhone="120" />
-                </local:GridView.TileHeight>
+                </custom:GridView.TileHeight>
             </custom:GridView>
         </ScrollView>
     </ContentPage.Content>
