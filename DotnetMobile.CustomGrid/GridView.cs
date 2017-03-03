@@ -94,6 +94,7 @@ namespace DotnetMobile.CustomGrid
 
 		public async Task BuildTiles(IEnumerable<object> tiles)
 		{
+			var startTime = DateTime.Now;
 			try {
 				if (tiles == null || tiles.Count() == 0)
 					Children?.Clear();
@@ -114,7 +115,11 @@ namespace DotnetMobile.CustomGrid
 					var tile = await BuildTile(enumerable[index]);
 
 					Children?.Add(tile, column, row);
+					InvalidateMeasure();
 				}
+				var endtime = DateTime.Now;
+				TimeSpan duration = startTime - endtime;
+				System.Diagnostics.Debug.WriteLine($" Total Time taken to Load {tiles.Count()} Records is {duration.TotalMilliseconds}");
 			} catch (Exception ex) {
 				throw ex;
 			} finally {
