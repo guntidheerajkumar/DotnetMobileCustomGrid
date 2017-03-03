@@ -1,7 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:custom="clr-namespace:DotnetMobile.CustomGrid;assembly=DotnetMobile.CustomGrid"
+             Title="{Binding MainTitle}"
              x:Class="Sample.MainPage">
     <ContentPage.Content>
         <ScrollView>
@@ -18,7 +19,7 @@
 							Command="{Binding ClickCommand}"
 							IsClippedToBounds="False">
                 <custom:GridView.TileHeight>
-                    <OnPlatform x:TypeArguments="x:Single" iOS="120" Android="120" WinPhone="120" />
+                    <OnPlatform x:TypeArguments="x:Single" iOS="150" Android="120" WinPhone="120" />
                 </custom:GridView.TileHeight>
             </custom:GridView>
         </ScrollView>
