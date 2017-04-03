@@ -102,7 +102,7 @@ The object that you will be getting here is the model that you have passed at th
 
         }
     }
-    ```
+  ```
 
-## Recommendations:
+### Recommendations:
 - For better performance and getting rid of memory exceptions please do use Xamarin.FFImageLoading.Forms for Image Processing.
